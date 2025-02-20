@@ -17,7 +17,8 @@
     "axios": "^1.7.9",
     "bcryptjs": "^3.0.2",
     "dotenv": "^16.4.7",
-    "fastify": "^5.2.1",
+    "fastify": "^3.29.5",
+    "fastify-cors": "^6.1.0",
     "jsonwebtoken": "^9.0.2"
   },
   "devDependencies": {

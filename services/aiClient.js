@@ -11,13 +11,9 @@ class AIClient {
     try {
       const modelInstance = this.geminiAI.getGenerativeModel({ model });
 
-      // Convertir l'image en Base64
-      const imageBase64 = await this.imageUrlToBase64(imageUrl);
-
-      // Envoyer la requête avec l'image encodée
       const response = await modelInstance.generateContent([
         { text: prompt },
-        { inlineData: { mimeType: "image/png", data: imageBase64 } },
+        { inlineData: { mimeType: "image/png", data: imageUrl } },
       ]);
 
       return response.response.text();
