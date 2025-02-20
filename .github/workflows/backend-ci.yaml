@@ -22,7 +22,6 @@ jobs:
           mkdir -p $HOME/bin
           export PATH=$PATH:$HOME/bin
           mv container-structure-test-linux-amd64 $HOME/bin/container-structure-test
-          cd backend
           container-structure-test test --image ghcr.io/devops-project-ttb/backend:${{ github.sha }} --config tests/cst.yaml
 
       - name: Log in to the registry
