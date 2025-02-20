@@ -6,18 +6,13 @@ services:
     container_name: backend
     ports:
       - 5000:5000
-    environment:
-      - OLLAMA_SERVICE_NAME=ollama:11434
-    depends_on:
-      - ollama
     networks:
       - backend-frontend
-      - backend-ollama
 
   frontend:
     build:
       context: ../frontend
-      dockerfile: Dockerfile.chiselled.full
+      dockerfile: Dockerfile
     container_name: frontend
     ports:
       - 3000:3000
