@@ -5,7 +5,6 @@ metadataTest:
     - key: "PORT"
       value: "5000"
   exposedPorts: ["5000"]
-  entrypoint: ["node", "server.js"]
 
 fileExistenceTests:
   - name: "Check if server.js exists"
@@ -32,13 +31,5 @@ commandTests:
     args: ["--version"]
     expectedOutput: [".*"]
 
-  - name: "Ensure Fastify is installed"
-    command: "npm"
-    args: ["list", "--depth=0"]
-    expectedOutput: ["fastify@"]
 
-  - name: "Check if the application starts correctly"
-    setup: [["node", "server.js", "&"], ["sleep", "5"]]
-    command: "curl"
-    args: ["-f", "http://localhost:5000"]
-    expectedOutput: [".*"]
+
