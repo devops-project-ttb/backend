@@ -1,0 +1,44 @@
+schemaVersion: "2.0.0"
+
+metadataTest:
+  envVars:
+    - key: "PORT"
+      value: "5000"
+  exposedPorts: ["5000"]
+  entrypoint: ["node", "server.js"]
+
+fileExistenceTests:
+  - name: "Check if server.js exists"
+    path: "/app/server.js"
+    shouldExist: true
+  - name: "Check if node_modules is present"
+    path: "/app/node_modules"
+    shouldExist: true
+  - name: "Check if routes directory exists"
+    path: "/app/routes"
+    shouldExist: true
+  - name: "Check if services directory exists"
+    path: "/app/services"
+    shouldExist: true
+
+commandTests:
+  - name: "Check Node.js version"
+    command: "node"
+    args: ["--version"]
+    expectedOutput: [".*"]
+
+  - name: "Check npm version"
+    command: "npm"
+    args: ["--version"]
+    expectedOutput: [".*"]
+
+  - name: "Ensure Fastify is installed"
+    command: "npm"
+    args: ["list", "--depth=0"]
+    expectedOutput: ["fastify@"]
+
+  - name: "Check if the application starts correctly"
+    setup: [["node", "server.js", "&"], ["sleep", "5"]]
+    command: "curl"
+    args: ["-f", "http://localhost:5000"]
+    expectedOutput: [".*"]
