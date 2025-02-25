@@ -1,9 +1,11 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import axios from "axios";
+import dotenv from "dotenv";
 
+dotenv.config();
 class AIClient {
-  constructor(apiKey) {
-    this.apiKey = apiKey;
+  constructor() {
+    this.apiKey = process.env.GEMINI_API_KEY;;
     this.geminiAI = new GoogleGenerativeAI(apiKey);
   }
 

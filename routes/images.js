@@ -1,6 +1,7 @@
 import AIClient from "../services/aiClient.js";
 
-const aiClient = new AIClient("AIzaSyC3XqaXc4rUsm2O3H1n6sJZfuk7-V4PcFE"); // Utilisation de la clé API stockée
+
+const aiClient = new AIClient(); // Utilisation de la clé API stockée
 
 export default async function imageRoutes(fastify, options) {
   fastify.post("/images/analyze", async (request, reply) => {
