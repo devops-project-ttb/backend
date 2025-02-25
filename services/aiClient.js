@@ -4,8 +4,8 @@ import dotenv from "dotenv";
 
 dotenv.config();
 class AIClient {
-  constructor() {
-    this.apiKey = process.env.GEMINI_API_KEY;;
+  constructor(apiKey) {
+    this.apiKey = process.env.GEMINI_API_KEY;
     this.geminiAI = new GoogleGenerativeAI(apiKey);
   }
 

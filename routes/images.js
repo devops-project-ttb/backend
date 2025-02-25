@@ -1,7 +1,9 @@
 import AIClient from "../services/aiClient.js";
+import dotenv from "dotenv";
 
+dotenv.config();
 
-const aiClient = new AIClient(); // Utilisation de la clé API stockée
+const aiClient = new AIClient(process.env.GEMINI_API_KEY); // Utilisation de la clé API stockée
 
 export default async function imageRoutes(fastify, options) {
   fastify.post("/images/analyze", async (request, reply) => {
