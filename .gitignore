@@ -2,3 +2,4 @@
 yarn.lock
 pnpm-lock.yaml
 .env
+google-credentials.json
