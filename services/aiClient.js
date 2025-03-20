@@ -25,6 +25,7 @@ class AIClient {
     }
   }
 
+
   async imageUrlToBase64(imageUrl) {
     try {
       const response = await axios.get(imageUrl, { responseType: "arraybuffer" });
@@ -32,6 +33,21 @@ class AIClient {
     } catch (error) {
       console.error(`Erreur lors de la conversion de l'image en Base64: ${error.message}`);
       throw new Error("Impossible de convertir l'image.");
+    }
+  }
+
+  async answerPrompt(prompt, model = "gemini-1.5-flash") {
+    try {
+      const modelInstance = this.geminiAI.getGenerativeModel({ model });
+  
+      const response = await modelInstance.generateContent({
+        contents: [{ role: "user", parts: [{ text: prompt }] }],
+      });
+  
+      return response.response.text();
+    } catch (error) {
+      console.error(`Erreur lors de la réponse à la requête: ${error.message}`);
+      throw new Error("Impossible de répondre à la requête.");
     }
   }
 }
