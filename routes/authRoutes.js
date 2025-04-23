@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { userSchema } from "../schemas/userSchema.js";
 import { prisma } from "../services/prisma.js"; 
+import axios from "axios";
 
 dotenv.config();
 
@@ -71,6 +72,14 @@ export default async function authRoutes(fastify, options) {
       const token = jwt.sign({ user_id: user.id, email: user.email }, process.env.JWT_SECRET, {
         expiresIn: "1h",
       });
+      // const n8n_response = await axios.get(process.env.N8N_WEBHOOK_URL,{
+      //   data: {
+          // pseudo: user.pseudo,
+      //     email: user.email,
+      //     createdAt: user.createdAt,
+      //   },
+      // });
+      // console.log(n8n_response.data)
 
       return reply.send({ message: "Connexion réussie", token: token, user: user });
     } catch (error) {

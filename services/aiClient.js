@@ -1,5 +1,4 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import axios from "axios";
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -17,7 +16,8 @@ class AIClient {
         { text: prompt },
         { inlineData: { mimeType: "image/png", data: imageUrl } },
       ]);
-
+      // const n8n_response = await axios.get(process.env.N8N_WEBHOOK_URL)
+      
       return response.response.text();
     } catch (error) {
       console.error(`Erreur lors de l'analyse de l'image avec Gemini: ${error.message}`);

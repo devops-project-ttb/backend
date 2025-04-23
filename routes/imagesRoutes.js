@@ -1,5 +1,6 @@
 import AIClient from "../services/aiClient.js";
 import dotenv from "dotenv";
+import axios from "axios";
 
 dotenv.config();
 
@@ -48,7 +49,11 @@ export default async function imageRoutes(fastify, options) {
       if (!jsonResponse.nom || !jsonResponse.provenance || !jsonResponse.histoire || !jsonResponse.accompagnement) {
         return reply.code(500).send({ error: "Le JSON retourné par l'IA est incomplet." });
       }
-
+      const n8n_response = await axios.get("https://etiket.app.n8n.cloud/webhook-test/scan",{
+        data: {
+        jsonResponse
+        }
+      });
       return reply.send({ message: "Analyse réussie", data: jsonResponse });
     } catch (error) {
       console.error("Erreur lors de l'analyse de l'image :", error);
