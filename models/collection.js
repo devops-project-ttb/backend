@@ -4,9 +4,9 @@ const prisma = new PrismaClient();
 export const getCollectionsByUserId = async (user_id) => {
   return await prisma.collection.findMany({
     where: { user_id },
-    include: { type: true, items: { include: { item: true } } },
   });
 };
+
 
 export const createCollection = async (user_id, type_id) => {
   return await prisma.collection.create({
