@@ -1,7 +1,7 @@
 import Fastify from "fastify";
 import dotenv from "dotenv";
 import routes from "./routes/index.js";
-import fastifyCors from 'fastify-cors'; // Import du plugin CORS
+import fastifyCors from "fastify-cors"; // Import du plugin CORS
 import logger from "./services/logger.js";
 import { uploadLogsToGCS } from "./services/gcsUploader.js";
 dotenv.config();
@@ -24,7 +24,7 @@ fastify.get("/", async (request, reply) => {
 const start = async () => {
   try {
     await fastify.listen({ port: process.env.PORT || 5000, host: "0.0.0.0" });
-    setInterval(uploadLogsToGCS, 60000 * 5 ); 
+    setInterval(uploadLogsToGCS, 60000 * 5 );
   } catch (err) {
     fastify.log.error(err);
     process.exit(1);
