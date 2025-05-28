@@ -2,7 +2,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { userSchema } from "../schemas/userSchema.js";
-import { prisma } from "../services/prisma.js"; 
+import { prisma } from "../services/prisma.js";
 import axios from "axios";
 
 dotenv.config();
@@ -35,12 +35,41 @@ export default async function authRoutes(fastify, options) {
           updatedAt: new Date(),
         },
       });
-      const token = jwt.sign({ user_id: newUser.id, email: newUser.email }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+
+      // Création des collections par défaut
+      await prisma.collection.create({
+        data: {
+          collection_name: "Bières",
+          user_id: newUser.user_id,
+          type_id: "1",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
       });
-  
+      await prisma.collection.create({
+        data: {
+          collection_name: "Vins",
+          user_id: newUser.user_id,
+          type_id: "2",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+      });
+
+      const token = jwt.sign(
+        { user_id: newUser.id, email: newUser.email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+
       console.log(newUser);
-      return reply.code(201).send({ message: "Utilisateur inscrit avec succès", user: newUser ,token:token});
+      return reply.code(201).send({
+        message: "Utilisateur inscrit avec succès",
+        user: newUser,
+        token: token,
+      });
     } catch (error) {
       console.error("Erreur lors de l'inscription :", error);
       return reply.code(400).send({ error: error.errors || "Erreur serveur" });
@@ -69,19 +98,27 @@ export default async function authRoutes(fastify, options) {
       }
 
       // Génération du token JWT
-      const token = jwt.sign({ user_id: user.id, email: user.email }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
-      });
+      const token = jwt.sign(
+        { user_id: user.id, email: user.email },
+        process.env.JWT_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
       // const n8n_response = await axios.get(process.env.N8N_WEBHOOK_URL,{
       //   data: {
-          // pseudo: user.pseudo,
+      // pseudo: user.pseudo,
       //     email: user.email,
       //     createdAt: user.createdAt,
       //   },
       // });
       // console.log(n8n_response.data)
 
-      return reply.send({ message: "Connexion réussie", token: token, user: user });
+      return reply.send({
+        message: "Connexion réussie",
+        token: token,
+        user: user,
+      });
     } catch (error) {
       console.error("Erreur lors de la connexion :", error);
       return reply.code(500).send({ error: "Erreur serveur" });
