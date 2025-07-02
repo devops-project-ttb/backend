@@ -9,6 +9,7 @@ export const userItemSchema = z.object({
 });
 
 export const userItemUpdateSchema = userItemSchema.partial({
+  item_id: z.string(),
   is_favorite: z.boolean().optional(),
   updatedAt: z.date().optional(),
 });
