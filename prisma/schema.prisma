@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql" // Ou "mysql" ou "sqlite" selon ton choix
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
@@ -15,37 +15,47 @@ model User {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
   collections Collection[]
-  UserItem   UserItem[]
+  UserItem    UserItem[]
+}
+
+model Shop {
+  shop_id   String     @id @default(uuid())
+  email     String     @unique
+  password  String
+  name      String     @unique
+  address   String
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  city      String
+  ShopItem  ShopItem[]
 }
 
 model Collection {
   collection_id   String   @id @default(uuid())
-  user            User     @relation(fields: [user_id], references: [user_id])
   user_id         String
   createdAt       DateTime @default(now())
-  type            Type     @relation(fields: [type_id], references: [type_id])
   type_id         String
-  items           Item[]
   collection_name String
   updatedAt       DateTime @updatedAt
+  type            Type     @relation(fields: [type_id], references: [type_id])
+  user            User     @relation(fields: [user_id], references: [user_id])
 }
 
 model Item {
-  item_id       String      @id @default(uuid())
-  type          Type        @relation(fields: [type_id], references: [type_id])
-  type_id       String
-  collection    Collection? @relation(fields: [collection_id], references: [collection_id])
-  collection_id String
-  item_name     String
-  image         String?
-  provenance    String?
-  description   String?
-  note          Int?
-  aromes        String[]
-  accords       String[]
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  UserItem      UserItem[]
+  item_id     String     @id @default(uuid())
+  type_id     String
+  item_name   String
+  image       String?
+  provenance  String?
+  description String?
+  note        Int?
+  aromes      String[]
+  accords     String[]
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  type        Type       @relation(fields: [type_id], references: [type_id])
+  ShopItem    ShopItem[]
+  UserItem    UserItem[]
 }
 
 model Type {
@@ -56,13 +66,27 @@ model Type {
 }
 
 model UserItem {
-  user_id String
-  item_id String
-  is_favorite    Boolean @default(false)
-  user    User   @relation(fields: [user_id], references: [user_id])
-  item    Item   @relation(fields: [item_id], references: [item_id])
-  updatedAt     DateTime @updatedAt
-  createdAt     DateTime    @default(now())
+  user_id     String
+  item_id     String
+  is_favorite Boolean  @default(false)
+  updatedAt   DateTime @updatedAt
+  createdAt   DateTime @default(now())
+  item        Item     @relation(fields: [item_id], references: [item_id])
+  user        User     @relation(fields: [user_id], references: [user_id])
 
   @@id([user_id, item_id])
+}
+
+model ShopItem {
+  shop_id        String
+  item_id        String
+  updatedAt      DateTime @updatedAt
+  createdAt      DateTime @default(now())
+  is_available   Boolean  @default(true)
+  price          Float
+  stock_quantity Int?
+  item           Item     @relation(fields: [item_id], references: [item_id])
+  shop           Shop     @relation(fields: [shop_id], references: [shop_id])
+
+  @@id([shop_id, item_id])
 }
