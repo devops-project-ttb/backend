@@ -22,7 +22,7 @@ Voici le format attendu, qui correspond au modèle d'une entité "Item" dans une
 
 {
   "item_name": "Nom complet de la boisson (marque + type + cuvée)",
-  "type_name": "vin" ou "bière",
+  "type_id": "1" si bière et "0" si vin,
   "provenance": "Domaine ou brasserie, Ville, Pays",
   "description": "Description détaillée des caractéristiques de la boisson (style, arômes, saveurs, process de fabrication...)",
   "aromes": ["arôme principal 1", "arôme 2", "arôme 3"],
@@ -61,7 +61,7 @@ Voici le format attendu, qui correspond au modèle d'une entité "Item" dans une
         });
       } else {
         const n8n_response = await axios.get(
-          "https://n8n-uoos.onrender.com/webhook/scan",
+          "https://n8n-g6sm.onrender.com/webhook/scan",
           {
             data: {
               jsonResponse,
